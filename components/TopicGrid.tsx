@@ -8,7 +8,9 @@ import type { Topic, TopicGroup } from "@/lib/types";
 
 const groups: { id: TopicGroup; title: string; subtitle: string }[] = [
   { id: "small", title: "Small words", subtitle: "Tiny words doing big grammatical jobs." },
-  { id: "everyday", title: "Everyday words", subtitle: "Common words with a surprising number of lives." },
+  { id: "verbs", title: "Verbs", subtitle: "Everyday verbs with a surprising number of lives." },
+  { id: "everyday", title: "Everyday expressions", subtitle: "What you'll hear in every bar in Spain." },
+  { id: "pairs", title: "Pairs", subtitle: "Two words where English only has one." },
 ];
 
 export function TopicGrid({ topics }: { topics: Topic[] }) {

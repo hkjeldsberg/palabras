@@ -9,6 +9,7 @@ import { RuleChips } from "@/components/RuleChips";
 import { LastTopicMarker } from "@/lib/lastTopic";
 import { getNextTopic, getTopic, topics } from "@/lib/topics";
 import { heroWordSize } from "@/lib/wordSize";
+import { WordMark } from "@/components/WordMark";
 
 export function generateStaticParams() {
   return topics.map((t) => ({ slug: t.slug }));
@@ -69,7 +70,9 @@ async function TopicContent({ params }: { params: PageProps<"/topic/[slug]">["pa
           <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <ViewTransition name={`word-${topic.slug}`} share="morph-word" default="none">
-                <h1 className={`type-word text-tile-ink w-fit ${heroWordSize(topic.word)}`}>{topic.word}</h1>
+                <h1 className="type-word text-tile-ink w-fit" style={{ fontSize: heroWordSize(topic.word) }}>
+                  <WordMark word={topic.word} />
+                </h1>
               </ViewTransition>
               <p className="text-tile-ink mt-6 text-[1.0625rem] tracking-[-0.01em] opacity-85 sm:mt-9 sm:text-[1.3125rem]">
                 {topic.tagline}

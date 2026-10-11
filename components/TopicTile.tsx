@@ -7,6 +7,7 @@ import { getLastTopic } from "@/lib/lastTopic";
 import type { TopicProgress } from "@/lib/progress";
 import type { Topic } from "@/lib/types";
 import { tileWordSize } from "@/lib/wordSize";
+import { WordMark } from "./WordMark";
 
 // Critically damped (damping ≈ 2·√stiffness): follows the pointer with no wobble.
 const follow = { stiffness: 220, damping: 30, mass: 1 };
@@ -136,10 +137,10 @@ export function TopicTile({ topic, progress, index, intro }: Props) {
               <div className="absolute inset-x-0 bottom-0 p-[10cqw]">
                 <ViewTransition name={`word-${topic.slug}`} share="morph-word" default="none">
                   <motion.span
-                    className={`type-word text-tile-ink block w-fit ${tileWordSize(topic.word)}`}
-                    style={{ x: wordX, y: wordY }}
+                    className="type-word text-tile-ink block w-fit"
+                    style={{ x: wordX, y: wordY, fontSize: tileWordSize(topic.word) }}
                   >
-                    {topic.word}
+                    <WordMark word={topic.word} />
                   </motion.span>
                 </ViewTransition>
                 <p className="text-tile-ink mt-[4cqw] line-clamp-2 text-[clamp(0.75rem,5.4cqw,1.0625rem)] leading-snug tracking-[-0.005em] opacity-85">

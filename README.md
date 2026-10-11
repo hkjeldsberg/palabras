@@ -2,7 +2,7 @@
 
 **Master tricky Spanish words in a few focused minutes.**
 
-palabras is a small, focused web app for beginner-to-intermediate learners heading to Spain. Each topic takes one deceptively simple word (*se*, *por*, *ya*, *que*, *quedar*…), explains its different jobs in plain English, shows it in real sentences, and ends with a quick quiz. One colour per word, so the rules stick.
+palabras is a small, focused web app for beginner-to-intermediate learners heading to Spain. Each topic takes one deceptively simple word (*se*, *por*, *ya*, *quedar*, *venga*…) or a pair English squeezes into one (*ser / estar*), explains its different jobs in plain English, shows it in real sentences, and ends with a quick quiz. One colour per word, so the rules stick.
 
 It runs in any browser, adapts to phones, and can be installed to the home screen as an app.
 
@@ -10,11 +10,16 @@ It runs in any browser, adapts to phones, and can be installed to the home scree
 
 ## What's inside
 
-**22 topics** in two groups:
+**53 topics** in four sections:
 
-| Small words | Everyday words |
+| Section | Topics |
 | --- | --- |
-| se · por · ya · me · para · lo · le · que · como · si · de · a · mismo · pues | vale · quedar · echar · dar · llevar · tal · nada · hecho |
+| **Small words** (23) | se · por · ya · me · para · lo · le · que · como · si · de · a · mismo · pues · en · con · sin · ni · tan · aunque · cuando · donde · nos |
+| **Verbs** (13) | quedar · echar · dar · llevar · hacer · tener · poner · pasar · sacar · coger · volver · acabar · haber |
+| **Everyday expressions** (10) | vale · tal · nada · hecho · venga · vaya · anda · hombre · bueno · igual |
+| **Pairs** (7) | ser / estar · saber / conocer · pedir / preguntar · llevar / traer · ir / venir · pero / sino · por / para |
+
+**Pairs** are contrast topics: two words where English uses one. Their tiles stack both words, and their quizzes make you choose between them.
 
 Every topic has:
 
@@ -80,6 +85,7 @@ app/
 components/
   TopicGrid.tsx, TopicTile.tsx   Dashboard sections and tilting tiles
   Quiz.tsx, QuizDock.tsx         Quiz, and the side pane / bottom sheet around it
+  WordMark.tsx                   The big word (pairs stack their two words)
   HeroTitle.tsx, Highlight.tsx, Reveal.tsx, RuleChips.tsx, ProgressRing.tsx
 lib/
   types.ts                 Topic contract and list of slugs
@@ -94,10 +100,12 @@ skills/apple-design/       The design guidelines this app follows
 
 1. Create `lib/content/<slug>.ts` that exports a `Topic` (see `lib/types.ts`):
    - `word`, `title`, `tagline`, `blurb`
-   - `hue` (0–360), and `group` (`"small"` or `"everyday"`)
+   - `hue` (0–360): pick one that differs clearly from the tiles to its left and above
+   - `group`: `"small"`, `"verbs"`, `"everyday"` or `"pairs"`
+   - For a pair, set `word` to `"a / b"` (for example `"ser / estar"`) and the title to `“A” or “B”?`
    - `rules`, `examples`, `quiz`
 2. Add the slug to `topicSlugs` in `lib/types.ts`, in the position you want it on the dashboard.
-3. Import it in `lib/topics.ts` and add it to `bySlug`.
+3. Import it in `lib/topics.ts` and add it to `bySlug` (hyphenated slugs export camelCase names, e.g. `serEstar`).
 
 Content conventions:
 
@@ -112,38 +120,41 @@ Content conventions:
 
 ### More words
 
+Everything from the first wish list is now built. Next candidates:
+
 **Small words**
 
-- **en, con, sin**: *en* for "on/at/in" (*en la mesa, en verano*); *con* and *conmigo/contigo*; *sin* + infinitive.
-- **ni**: *ni… ni…*, *ni siquiera*, *¡ni hablar!*
-- **tan / tanto**: comparisons (*tan alto como*), "so much" (*¡tanto trabajo!*), *tanto… como…*.
-- **sino / pero**: "but rather" vs "but". A natural contrast quiz.
-- **aunque**: indicative (fact) vs subjunctive (hypothetical or conceded).
-- **cuando / cuándo, donde / dónde**: relative vs question forms, and *cuando* + subjunctive for the future.
-- **nos / os / les**: plural object pronouns, and *os* as the Spain-specific "you all".
+- **hasta / desde**: "until", "even" (*hasta mi abuela lo sabe*), *desde* vs *desde hace* (*vivo aquí desde 2020 / desde hace dos años*).
+- **también / tampoco**: "me too" vs "me neither", and why *yo tampoco* answers a negative.
+- **muy / mucho**: before adjectives vs nouns and verbs (*muy cansado*, *mucho trabajo*, *me gusta mucho*).
+- **todavía / aún**: "still" vs "not yet" (*todavía no*), and *aún* vs *aun*.
+- **qué / cuál**: which question word goes before a noun, before *ser*, and in choices.
+- **algo / alguien / alguno**: and their negatives *nada / nadie / ninguno*, with the double negative.
+- **mientras**: "while" (indicative) vs "as long as" (subjunctive).
 
-**Everyday verbs with many lives**
+**Verbs**
 
-- **hacer**: weather (*hace frío*), time ago (*hace dos años*), *hacerse* (to become), *hacer falta*.
-- **tener**: *tener que*, *tener ganas de*, ages and feelings (*tengo hambre*), *tener razón*.
-- **poner / ponerse**: to put, to order (*¿me pones…?*), to become (*ponerse nervioso*), to put on clothes.
-- **pasar**: to happen (*¿qué pasa?*), to spend time (*pasarlo bien*), to pass by, *pasarse* (to overdo it).
-- **sacar**: to take out, to get a grade (*sacar un 8*), to take photos, to buy tickets.
-- **coger** (Spain): to take or catch (*coger el bus*). Includes a heads-up that it's vulgar in parts of Latin America.
-- **volver / acabar / soler**: *volver a* + infinitive (to do again), *acabar de* (to have just), *suelo* (I usually).
-- **haber / hay**: *hay* vs *está*, *hay que*, *había*.
+- **dejar**: to leave, to let (*déjame ver*), to lend, *dejar de* (to stop doing).
+- **salir**: to go out, to turn out (*salió bien*), to date (*salir con*), to appear in (*salir en la tele*).
+- **caer**: to fall, *caer bien/mal* (to like or dislike someone), *caer en la cuenta*.
+- **tocar**: to touch, to play an instrument, "your turn" (*te toca*), to win (*me tocó la lotería*).
+- **meter / meterse**: to put in, *meterse en* (to get involved in), *meter la pata* (to put your foot in it).
+- **parecer / parecerse**: to seem, *¿qué te parece?*, to look like someone.
+- **soler**: "usually" (*suelo cenar tarde*).
 
-**Spanish-from-Spain conversation glue**
+**Everyday expressions**
 
-- **venga**: "come on", "OK, bye", "let's go".
-- **vaya**: "wow", "what a…" (*¡vaya día!*), "oh well".
-- **anda**: surprise, disbelief, "come on".
-- **hombre / tío**: emphasis and friendly address.
-- **bueno / pues / o sea / igual**: fillers, and *igual* = "maybe".
+- **a ver**: "let's see", "OK, listen", calling attention.
+- **claro**: "of course", *claro que sí/no*, *¡claro!* as agreement.
+- **qué va**: "no way / not at all".
+- **menos mal**: "thank goodness".
+- **ojalá**: "hopefully / I wish", with the subjunctive.
+- **o sea / en plan**: "I mean", "like" (young Spain).
+- **tío / tía**: friendly address, "mate".
 
-**Contrast topics**, a new topic type that teaches a pair:
+**Pairs**
 
-- ser vs estar · saber vs conocer · pedir vs preguntar · llevar vs traer · ir vs venir · pero vs sino · por vs para (a combined revision quiz)
+- ver / mirar · oír / escuchar · tocar / jugar · salir / irse · aquí / ahí / allí · tú / usted · desde / desde hace
 
 ### Features
 

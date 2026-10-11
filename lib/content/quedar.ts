@@ -7,7 +7,7 @@ export const quedar: Topic = {
   tagline: "Meet up, stay put, run out — and look good doing it.",
   blurb: "Meet up · be left · fit · stay",
   hue: 250,
-  group: "everyday",
+  group: "verbs",
   rules: [
     {
       name: "To meet up",

@@ -17,20 +17,53 @@ export const topicSlugs = [
   "a",
   "mismo",
   "pues",
-  // Everyday words
-  "vale",
+  "en",
+  "con",
+  "sin",
+  "ni",
+  "tan",
+  "aunque",
+  "cuando",
+  "donde",
+  "nos",
+  // Verbs
   "quedar",
   "echar",
   "dar",
   "llevar",
+  "hacer",
+  "tener",
+  "poner",
+  "pasar",
+  "sacar",
+  "coger",
+  "volver",
+  "acabar",
+  "haber",
+  // Everyday expressions
+  "vale",
   "tal",
   "nada",
   "hecho",
+  "venga",
+  "vaya",
+  "anda",
+  "hombre",
+  "bueno",
+  "igual",
+  // Pairs
+  "ser-estar",
+  "saber-conocer",
+  "pedir-preguntar",
+  "llevar-traer",
+  "ir-venir",
+  "pero-sino",
+  "por-para",
 ] as const;
 
 export type TopicSlug = (typeof topicSlugs)[number];
 
-export type TopicGroup = "small" | "everyday";
+export type TopicGroup = "small" | "verbs" | "everyday" | "pairs";
 
 export interface Rule {
   name: string;
@@ -57,7 +90,10 @@ export interface Question {
 
 export interface Topic {
   slug: TopicSlug;
-  /** Word as shown on the tile, lowercase (e.g. "que", "como"). */
+  /**
+   * Word as shown on the tile, lowercase (e.g. "que", "como").
+   * Pair topics use "a / b" (e.g. "ser / estar"); the UI stacks the two words.
+   */
   word: string;
   title: string;
   tagline: string;

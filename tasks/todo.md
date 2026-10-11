@@ -47,3 +47,14 @@
 - Phone 390×844: no horizontal overflow, no tile-word overflow; sheet peek at 776px. Tap opens (page scroll locked), fast drag down closes, slow short drag up snaps back, fast flick up opens, scrim tap and Esc close.
 - Desktop 1440: unchanged side pane, no drag handle.
 - Manifest + icons 200; tsc, lint, build clean.
+
+## 2026-10-11 — 31 more topics (53 total), four sections
+
+- [x] Sections: Small words (23) · Verbs (13, moved quedar/echar/dar/llevar here) · Everyday expressions (10) · Pairs (7, new topic kind)
+- [x] `TopicGroup` = small | verbs | everyday | pairs; pair `word` = "a / b", stacked by `WordMark`
+- [x] Word size from a fit formula on the longest line (container-query units), replaces fixed steps
+- [x] Hues hand-picked: each new tile ≥ ~75° from its left and upper neighbour
+- [x] Registry generated from `topicSlugs` (hyphenated slugs → camelCase exports)
+- [x] 7 parallel content agents; content check: every example rule matches, every answer in options, ≤1 blank, 4–5 rules/questions → clean
+- [x] Verified: 53 tiles at 390/1280/1440/1920, no word or page overflow, all 53 pages render with quiz, no page errors; tsc/lint/build clean
+- [x] README: four-section topic table, pair topics, updated "adding a topic", new extension wish list (only unbuilt words)

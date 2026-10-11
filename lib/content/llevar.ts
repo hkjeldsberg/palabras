@@ -7,7 +7,7 @@ export const llevar: Topic = {
   tagline: "Carry it, wear it, give a lift — and count the time.",
   blurb: "Carry · wear · llevo dos años",
   hue: 205,
-  group: "everyday",
+  group: "verbs",
   rules: [
     {
       name: "Carry / take along",

@@ -7,7 +7,7 @@ export const dar: Topic = {
   tagline: "It gives, it scares, it faces the sea — and sometimes you just don’t care.",
   blurb: "Give · me da igual · darse cuenta",
   hue: 60,
-  group: "everyday",
+  group: "verbs",
   rules: [
     {
       name: "To give",

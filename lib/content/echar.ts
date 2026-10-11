@@ -7,7 +7,7 @@ export const echar: Topic = {
   tagline: "Throw it, pour it, kick it out — and miss it afterwards.",
   blurb: "Throw · pour · echar de menos",
   hue: 130,
-  group: "everyday",
+  group: "verbs",
   rules: [
     {
       name: "To throw",
