@@ -14,3 +14,5 @@
 - **Back-navigation to a dashboard: use `scroll={false}` + scroll the target into view in `useLayoutEffect`** so the view-transition morph lands on a visible element.
 - **Renaming storage keys loses user data** — migrate the legacy key on first read.
 - **Satori (`next/og`) has no `inset`, only flexbox, and a thin default font** — draw glyphs as SVG shapes.
+- **No prettier config here: bare `prettier --write` reflows to 80 cols.** Codebase is 120 — use `--print-width 120`. And don't splice JSX with a script that matches the first occurrence of a shared string (`paneGrid` is also in the skeleton).
+- **Hide a stateful client subtree with `<Activity mode="hidden">`, not CSS.** State is kept and effects (e.g. global keydown listeners) are torn down while hidden.

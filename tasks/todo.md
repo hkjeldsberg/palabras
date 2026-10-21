@@ -58,3 +58,17 @@
 - [x] 7 parallel content agents; content check: every example rule matches, every answer in options, ≤1 blank, 4–5 rules/questions → clean
 - [x] Verified: 53 tiles at 390/1280/1440/1920, no word or page overflow, all 53 pages render with quiz, no page errors; tsc/lint/build clean
 - [x] README: four-section topic table, pair topics, updated "adding a topic", new extension wish list (only unbuilt words)
+
+## 2026-10-21 — Meaning map (from inspiration/)
+
+- [x] `meaningBranches(topic)` in `lib/topics.ts`: one branch per rule (name + shortest matching example es/en); `null` for pair topics (contrast, not one word fanning out)
+- [x] `components/MeaningMap.tsx`: word in a hand-drawn accent loop, branches in a grid around it (3 cols ≥md, 2 cols on phones, odd last one below), arrows measured from the DOM, drawn in with pathLength
+- [x] `components/TopicViews.tsx`: segmented toggle "Meaning map | Rules & quiz", map default; details kept in `<Activity>` so quiz state survives and its key listener is off while hidden
+- [x] Accent token `--accent` in `.theme` (light + dark)
+- [x] Verify: tsc, lint, build; headless at 390 + 1440 for all single-word topics (no overflow, arrows present), toggle works, pairs unchanged
+
+### Review
+- Map content derived from existing data (rule name + shortest example per rule) — no new copy needed.
+- Verified headless (next dev): 53 topics — 46 show the map with one arrow per rule, 7 pairs keep the old layout with no toggle; no horizontal overflow, no page errors. Toggle at 390 + 1440; quiz hidden on the map, digit keys don't answer it, quiz state survives map ⇄ details.
+- Screenshots checked: ya/hombre at 390, dar at 1440 light, vaya at 1440 dark.
+- tsc, lint, build clean.

@@ -123,3 +123,22 @@ export function getNextTopic(slug: string): Topic {
   const i = topics.findIndex((t) => t.slug === slug);
   return topics[(i + 1) % topics.length];
 }
+
+export interface MeaningBranch {
+  label: string;
+  es: string;
+  en: string;
+}
+
+/**
+ * One branch per rule for the meaning map, each with its shortest example.
+ * Pair topics contrast two words rather than fan one word out, so they get none.
+ */
+export function meaningBranches(topic: Topic): MeaningBranch[] | null {
+  if (topic.group === "pairs") return null;
+  return topic.rules.map((rule) => {
+    const examples = topic.examples.filter((ex) => ex.rule === rule.name);
+    const shortest = examples.reduce((a, b) => (b.es.length < a.es.length ? b : a));
+    return { label: rule.name, es: shortest.es, en: shortest.en };
+  });
+}

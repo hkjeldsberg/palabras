@@ -3,11 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, ViewTransition } from "react";
 import { Highlight } from "@/components/Highlight";
+import { MeaningMap } from "@/components/MeaningMap";
 import { OpenQuizButton, QuizDock } from "@/components/QuizDock";
 import { Reveal } from "@/components/Reveal";
 import { RuleChips } from "@/components/RuleChips";
+import { TopicViews } from "@/components/TopicViews";
 import { LastTopicMarker } from "@/lib/lastTopic";
-import { getNextTopic, getTopic, topics } from "@/lib/topics";
+import { getNextTopic, getTopic, meaningBranches, topics } from "@/lib/topics";
 import { heroWordSize } from "@/lib/wordSize";
 import { WordMark } from "@/components/WordMark";
 
@@ -60,6 +62,75 @@ async function TopicContent({ params }: { params: PageProps<"/topic/[slug]">["pa
   const topic = getTopic(slug);
   if (!topic) notFound();
   const next = getNextTopic(topic.slug);
+  const branches = meaningBranches(topic);
+
+  const details = (
+    <div className={paneGrid}>
+      {/* Left pane — the "why" and the "how" */}
+      <article>
+        <section aria-labelledby="rules-heading" className="mb-12 sm:mb-16">
+          <Reveal>
+            <h2 id="rules-heading" className="type-title mb-4 sm:mb-6">
+              How it works
+            </h2>
+          </Reveal>
+          <ul className="grid grid-cols-1 gap-3 sm:gap-4 xl:grid-cols-2">
+            {topic.rules.map((rule, i) => (
+              <Reveal as="li" key={rule.name} delay={i * 0.06} className="bg-tile-soft rounded-3xl p-5 sm:p-7">
+                <div className="mb-2 flex items-center gap-3">
+                  <span className="bg-tile-ink text-on-ink flex h-7 w-7 items-center justify-center rounded-full text-[0.8125rem] font-semibold tabular-nums">
+                    {i + 1}
+                  </span>
+                  <h3 className="text-tile-ink text-[1.125rem] font-semibold tracking-tight">{rule.name}</h3>
+                </div>
+                <p className="text-ink-2 mb-4">{rule.explanation}</p>
+                <p lang="es" className="text-[1.0625rem] font-medium tracking-[-0.01em] sm:text-[1.1875rem]">
+                  <Highlight text={rule.example} delay={0.4 + i * 0.06} />
+                </p>
+              </Reveal>
+            ))}
+          </ul>
+        </section>
+
+        <section aria-labelledby="examples-heading">
+          <Reveal>
+            <h2 id="examples-heading" className="type-title mb-2 sm:mb-6">
+              In context
+            </h2>
+          </Reveal>
+          <ol className="divide-hairline divide-y">
+            {topic.examples.map((ex, i) => (
+              <Reveal
+                as="li"
+                key={ex.es}
+                delay={i * 0.05}
+                className="flex flex-col-reverse items-start gap-2 py-5 sm:flex-row sm:justify-between sm:gap-6 sm:py-6"
+              >
+                <div>
+                  <p
+                    lang="es"
+                    className="text-[1.1875rem] leading-snug font-semibold tracking-[-0.02em] sm:text-[1.375rem]"
+                  >
+                    <Highlight text={ex.es} />
+                  </p>
+                  <p className="text-ink-2 mt-1 text-[0.9375rem] italic sm:mt-1.5 sm:text-[1.0625rem]">{ex.en}</p>
+                </div>
+                <span className="bg-tile-soft text-tile-ink shrink-0 rounded-full sm:mt-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap">
+                  {ex.rule}
+                </span>
+              </Reveal>
+            ))}
+          </ol>
+          <OpenQuizButton />
+        </section>
+      </article>
+
+      {/* Right pane — the "test", pinned alongside the reference (a bottom sheet on phones) */}
+      <aside className="lg:sticky lg:top-8 lg:self-start">
+        <QuizDock slug={topic.slug} questions={topic.quiz} next={{ slug: next.slug, word: next.word }} />
+      </aside>
+    </div>
+  );
 
   return (
     <div className="theme" style={{ "--h": topic.hue } as React.CSSProperties}>
@@ -83,71 +154,11 @@ async function TopicContent({ params }: { params: PageProps<"/topic/[slug]">["pa
         </section>
       </ViewTransition>
 
-      <div className={paneGrid}>
-        {/* Left pane — the "why" and the "how" */}
-        <article>
-          <section aria-labelledby="rules-heading" className="mb-12 sm:mb-16">
-            <Reveal>
-              <h2 id="rules-heading" className="type-title mb-4 sm:mb-6">
-                How it works
-              </h2>
-            </Reveal>
-            <ul className="grid grid-cols-1 gap-3 sm:gap-4 xl:grid-cols-2">
-              {topic.rules.map((rule, i) => (
-                <Reveal as="li" key={rule.name} delay={i * 0.06} className="bg-tile-soft rounded-3xl p-5 sm:p-7">
-                  <div className="mb-2 flex items-center gap-3">
-                    <span className="bg-tile-ink text-on-ink flex h-7 w-7 items-center justify-center rounded-full text-[0.8125rem] font-semibold tabular-nums">
-                      {i + 1}
-                    </span>
-                    <h3 className="text-tile-ink text-[1.125rem] font-semibold tracking-tight">{rule.name}</h3>
-                  </div>
-                  <p className="text-ink-2 mb-4">{rule.explanation}</p>
-                  <p lang="es" className="text-[1.0625rem] font-medium tracking-[-0.01em] sm:text-[1.1875rem]">
-                    <Highlight text={rule.example} delay={0.4 + i * 0.06} />
-                  </p>
-                </Reveal>
-              ))}
-            </ul>
-          </section>
-
-          <section aria-labelledby="examples-heading">
-            <Reveal>
-              <h2 id="examples-heading" className="type-title mb-2 sm:mb-6">
-                In context
-              </h2>
-            </Reveal>
-            <ol className="divide-hairline divide-y">
-              {topic.examples.map((ex, i) => (
-                <Reveal
-                  as="li"
-                  key={ex.es}
-                  delay={i * 0.05}
-                  className="flex flex-col-reverse items-start gap-2 py-5 sm:flex-row sm:justify-between sm:gap-6 sm:py-6"
-                >
-                  <div>
-                    <p
-                      lang="es"
-                      className="text-[1.1875rem] leading-snug font-semibold tracking-[-0.02em] sm:text-[1.375rem]"
-                    >
-                      <Highlight text={ex.es} />
-                    </p>
-                    <p className="text-ink-2 mt-1 text-[0.9375rem] italic sm:mt-1.5 sm:text-[1.0625rem]">{ex.en}</p>
-                  </div>
-                  <span className="bg-tile-soft text-tile-ink shrink-0 rounded-full sm:mt-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap">
-                    {ex.rule}
-                  </span>
-                </Reveal>
-              ))}
-            </ol>
-            <OpenQuizButton />
-          </section>
-        </article>
-
-        {/* Right pane — the "test", pinned alongside the reference (a bottom sheet on phones) */}
-        <aside className="lg:sticky lg:top-8 lg:self-start">
-          <QuizDock slug={topic.slug} questions={topic.quiz} next={{ slug: next.slug, word: next.word }} />
-        </aside>
-      </div>
+      {branches ? (
+        <TopicViews map={<MeaningMap word={topic.word} branches={branches} />}>{details}</TopicViews>
+      ) : (
+        details
+      )}
     </div>
   );
 }
